@@ -8,9 +8,8 @@ import { DashboardHeader } from '@/components/dashboard/header';
 import { PersonalizedPlanForm } from '@/components/dashboard/personalized-plan-form';
 import { PlanDisplay } from '@/components/dashboard/plan-display';
 import { BmiCalculator } from '@/components/dashboard/bmi-calculator';
-import Link from 'next/link';
 
-export default function DashboardPage() {
+export default function AiPlannerPage() {
   const [plan, setPlan] = useState<PersonalizedPlansOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,6 +24,10 @@ export default function DashboardPage() {
 
     if (result.success && result.data) {
       setPlan(result.data);
+      toast({
+        title: 'Success!',
+        description: 'Your personalized fitness plan has been generated.',
+      });
     } else {
       setError(result.error || 'An unknown error occurred.');
       toast({
@@ -38,7 +41,7 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-      <DashboardHeader title="Dashboard" />
+      <DashboardHeader title="AI Fitness Planner" />
       <main className="grid flex-1 items-start gap-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
         <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
           <PersonalizedPlanForm onFormSubmit={handleFormSubmit} isLoading={isLoading} />

@@ -3,8 +3,26 @@
     {
       "id": "gym-hero",
       "description": "A person working out in a modern gym.",
-      "imageUrl": "https://picsum.photos/seed/gympulse/1920/1080",
+      "imageUrl": "https://picsum.photos/seed/gympulse-hero/1920/1080",
       "imageHint": "gym workout"
+    },
+    {
+      "id": "features-splash",
+      "description": "Close up of a person lifting weights.",
+      "imageUrl": "https://picsum.photos/seed/gympulse-features/1200/800",
+      "imageHint": "weight lifting"
+    },
+    {
+      "id": "cta-splash",
+      "description": "A group of people in a fitness class.",
+      "imageUrl": "https://picsum.photos/seed/gympulse-cta/1200/600",
+      "imageHint": "fitness class"
+    },
+    {
+      "id": "login-background",
+      "description": "A stylish, modern gym interior.",
+      "imageUrl": "https://picsum.photos/seed/gympulse-login/1920/1080",
+      "imageHint": "modern gym"
     }
   ]
 }

@@ -18,8 +18,6 @@ import {
   HeartPulse,
   BookOpen,
   CalendarDays,
-  CreditCard,
-  Bell,
   Settings,
 } from "lucide-react";
 
@@ -29,8 +27,6 @@ const navItems = [
   { href: "/dashboard/progress", icon: HeartPulse, label: "Progress" },
   { href: "/dashboard/plans", icon: BookOpen, label: "My Plans" },
   { href: "/dashboard/booking", icon: CalendarDays, label: "Class Booking" },
-  { href: "/dashboard/payments", icon: CreditCard, label: "Payments" },
-  { href: "/dashboard/notifications", icon: Bell, label: "Notifications" },
 ];
 
 export function SidebarNav() {
@@ -70,7 +66,7 @@ export function SidebarNav() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip={{children: 'Settings'}}>
+            <SidebarMenuButton asChild tooltip={{children: 'Settings'}} isActive={pathname.startsWith('/dashboard/settings')}>
               <Link href="/dashboard/settings">
                 <Settings />
                 <span>Settings</span>
