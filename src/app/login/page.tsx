@@ -1,5 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,9 +22,56 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import { useToast } from '@/hooks/use-toast';
+import { loginUser } from '@/lib/actions';
+import { Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const bgImage = PlaceHolderImages.find(img => img.id === 'login-background');
+  const router = useRouter();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const [trainerEmail, setTrainerEmail] = useState('');
+  const [trainerPassword, setTrainerPassword] = useState('');
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
+
+  const handleLogin = async (role: 'user' | 'trainer' | 'admin') => {
+    setIsLoading(true);
+    let email, password;
+    switch(role) {
+      case 'user':
+        email = userEmail;
+        password = userPassword;
+        break;
+      case 'trainer':
+        email = trainerEmail;
+        password = trainerPassword;
+        break;
+      case 'admin':
+        email = adminEmail;
+        password = adminPassword;
+        break;
+    }
+
+    const result = await loginUser({ email, password, role });
+
+    if (result.success) {
+      toast({ title: 'Login Successful', description: 'Redirecting to your dashboard...' });
+      router.push('/dashboard');
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: result.error,
+      });
+    }
+    setIsLoading(false);
+  };
+
 
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
@@ -50,13 +101,16 @@ export default function LoginPage() {
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="user-email">Email</Label>
-                    <Input id="user-email" type="email" placeholder="m@example.com" required />
+                    <Input id="user-email" type="email" placeholder="m@example.com" required value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="user-password">Password</Label>
-                    <Input id="user-password" type="password" required />
+                    <Input id="user-password" type="password" required value={userPassword} onChange={(e) => setUserPassword(e.target.value)}/>
                   </div>
-                  <Button type="submit" className="w-full">Login</Button>
+                  <Button onClick={() => handleLogin('user')} disabled={isLoading} className="w-full">
+                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Login
+                  </Button>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -69,13 +123,16 @@ export default function LoginPage() {
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="trainer-email">Email</Label>
-                    <Input id="trainer-email" type="email" placeholder="trainer@example.com" required />
+                    <Input id="trainer-email" type="email" placeholder="trainer@example.com" required value={trainerEmail} onChange={(e) => setTrainerEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="trainer-password">Password</Label>
-                    <Input id="trainer-password" type="password" required />
+                    <Input id="trainer-password" type="password" required value={trainerPassword} onChange={(e) => setTrainerPassword(e.target.value)} />
                   </div>
-                  <Button type="submit" className="w-full">Login</Button>
+                   <Button onClick={() => handleLogin('trainer')} disabled={isLoading} className="w-full">
+                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Login
+                  </Button>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -88,13 +145,16 @@ export default function LoginPage() {
                 <CardContent className="space-y-4">
                    <div className="space-y-2">
                     <Label htmlFor="admin-email">Email</Label>
-                    <Input id="admin-email" type="email" placeholder="admin@example.com" required />
+                    <Input id="admin-email" type="email" placeholder="admin@example.com" required value={adminEmail} onChange={(e) => setAdminEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="admin-password">Password</Label>
-                    <Input id="admin-password" type="password" required />
+                    <Input id="admin-password" type="password" required value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} />
                   </div>
-                  <Button type="submit" className="w-full">Login</Button>
+                  <Button onClick={() => handleLogin('admin')} disabled={isLoading} className="w-full">
+                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Login
+                  </Button>
                 </CardContent>
               </Card>
             </TabsContent>
